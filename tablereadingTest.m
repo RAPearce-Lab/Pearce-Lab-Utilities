@@ -1,4 +1,3 @@
-
 % **** outline of mouse table curating we need to perform ****
 % 1. load in the "table of tables" so we know what to operate on
 % 2. for each table, load it in with appropriate opts - this is proving
@@ -7,24 +6,29 @@
 % 4. load in the specific columns and create the counts
 % ... do we want to edit and rewrite from here?
 
-
 % first, some testing
 tableTest = 'Z:\PearceLabRecords\Mouse Inventory\Lamp5-cre\Lamp5-cre.xlsx';
-sheetList = sheetnames(tableTest);
 keyColumnHeaders = {'mouseAssignment','sacCode','fundingID'};
+% given:  a single table
+% DO: step through each sheet, and return the row (and column) location of the start of the
+% mouse data.
+
+sheetList = sheetnames(tableTest);
 i = 4; % this will be a loop later.  starting with a page I know
 opts = detectImportOptions(tableTest,'Sheet',sheetList{i});
 
-% opts.VariableTypes{11} = 'char'; % % % % !   how do we know it's 11?  TODO: SEARCH? turn them all to char?  we could use column 1 and look for 'ID Number'
 fixedType = {'char'};
 numColumns = size(thisTable,2);
 charArray = repmat(fixedType, 1, numColumns);
 opts.VariableTypes(1:numColumns) = charArray;
 
-
 thisTable = readtable(tableTest,opts);
 for iCol = 1:size(thisTable,2)
-    contains(thisTable{:,iCol},keyColumnHeaders{1})
+    singleColumn = ismember(thisTable{:,iCol},keyColumnHeaders{1});
+    if sum(singleColumn)>0
+        thisRow = find(singleColumn,1,'first');
+        thisColumn = iCol;
+    end
 end
 
 
