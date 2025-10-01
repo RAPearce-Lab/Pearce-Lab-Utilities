@@ -15,11 +15,16 @@ keyColumnHeaders = {'mouseAssignment','sacCode','fundingID'};
 i = 4; % this will be a loop later.  starting with a page I know
 opts = detectImportOptions(tableTest,'Sheet',sheetList{i});
 
-% opts.VariableTypes{11} = 'char'; % % % % !   how do we know it's 11?  TODO: SEARCH? turn them all to char?  we could use column 1 and look for 'ID Number'
-fixedType = {'char'};
-numColumns = size(thisTable,2);
-charArray = repmat(fixedType, 1, numColumns);
-opts.VariableTypes(1:numColumns) = charArray;
+
+opts.VariableTypes{11} = 'char'; % % % % !   how do we know it's 11?  TODO: SEARCH? turn them all to char?  we could use column 1 and look for 'ID Number'
+
+newType = {'char'};
+numColumns = 20;
+startIndex = 1;
+endIndex = startIndex + numColumns - 1;
+
+% Create a cell array containing {'char', 'char', ..., 'char'}
+charArray = repmat(newType, 1, numColumns);
 
 
 thisTable = readtable(tableTest,opts);
