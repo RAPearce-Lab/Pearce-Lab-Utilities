@@ -25,6 +25,8 @@ for iSheet = 1:size(sheetList,1)
     tablefromSheetOut = table;
     thisTable = readtable(xlsxFileName,opts);
     for iHeader = 1:size(keyColumnHeaders,2)
+        % step through each column and look for matching key words until we
+        % find what we're looking for (or run out of columns)
         foundData = false;
         tempTable = table;
         iCol = 1;
@@ -54,7 +56,13 @@ for iSheet = 1:size(sheetList,1)
     if foundData
         tableOut = vertcat(tableOut, tablefromSheetOutClean);
     end
+    % let's look for correct dates and exclude anything without a good date
+    datetimeFormatString = 'dd-MMM-yyyy';
+    tableOut.("DOB") = datetime(tableOut.("DOB"), 'InputFormat', datetimeFormatString);
+    missingDates = isnat(tableOut.("DOB"));
+    tableOut(missingDates,:) = [];
+    warning(['File: ' xlsxFileName ' Sheet: ' sheetList{iSheet} ' excluded ' num2str(sum(missingDates)) ' records due to bad date formatting.']);
 end
-% TODO!  each column has missing data!  So there is no single perfect
-% column (even ID!)  need to sort through the original sheets / data
-% cleaning at this level...
+
+
+% many columns still have missing data. working on it.

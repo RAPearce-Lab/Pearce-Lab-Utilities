@@ -34,15 +34,13 @@ for i = 1:size(tableOfTables,1)
     end
 end
 
-writetable(bigTable,bigSaveFile);
-
 % cleanup here?
 % some of the rows we found (like the ones at the end or
 % ones we didn't enter) are empty and should be removed
-% eliminateThese = ismissing(fullAnimalTable.("mouseAssignment"));
-%fullAnimalTable(eliminateThese,:) = [];
+% eliminateThese = ismissing(bigTable.("mouseAssignment"));
+%bigTable(eliminateThese,:) = [];
 
-
+writetable(bigTable,bigSaveFile);
 
 
 
