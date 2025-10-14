@@ -9,6 +9,7 @@
 keyColumnHeaders = {'ID Number','DOB','Date of Exp','mouseAssignment','sacCode','fundingID'};
 bigSaveFile = 'Z:\PearceLabRecords\Mouse Inventory\2025totalMouseCount.xlsx';
 
+
 % example single animal file save
 % xlsxFileName = 'Z:\PearceLabRecords\Mouse Inventory\Lamp5-cre\Lamp5-cre.xlsx'; 
 % singleAnimalSaveFileName = 'Z:\PearceLabRecords\Mouse Inventory\Lamp5-cre\mouseCount.xlsx';
@@ -19,28 +20,22 @@ opts.VariableNamingRule = 'preserve';
 tableOfTables = readtable(tableOfTablesFileName,opts);
 % loop through our list of tables!
 bigTable = table;
+allBadRecords = table;
 for i = 1:size(tableOfTables,1)
     xlsxFileName = tableOfTables.("Full path"){i};
     thisLine = tableOfTables.("shorthand"){i};
     try
         disp(['Reading in ' thisLine]);
         % our new function
-        [singleAnimaltable] = readAndCombineXlsxRecord(xlsxFileName,keyColumnHeaders);
+        [singleAnimaltable,badRecordTable] = readAndCombineXlsxRecord(xlsxFileName,keyColumnHeaders);
         % writetable(singleAnimaltable,singleAnimalSaveFileName);
         bigTable = vertcat(bigTable,singleAnimaltable);
+        allBadRecords = vertcat(allBadRecords,badRecordTable);
         disp(['successfully read in in ' thisLine]);
     catch
         disp(['failed to read ' thisLine]);
     end
 end
 
-% cleanup here?
-% some of the rows we found (like the ones at the end or
-% ones we didn't enter) are empty and should be removed
-% eliminateThese = ismissing(bigTable.("mouseAssignment"));
-%bigTable(eliminateThese,:) = [];
-
-writetable(bigTable,bigSaveFile);
-
-
-
+writetable(bigTable,bigSaveFile,'Sheet','MouseSummary');
+writetable(allBadRecords,bigSaveFile,'Sheet','ExcludedEntries');
