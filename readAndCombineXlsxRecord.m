@@ -99,7 +99,7 @@ for iSheet = 1:size(sheetList,1)
         missingDates = isnat(tablefromSheetOutClean.("DOB"));
         badRecordTable = vertcat(tablefromSheetOutClean(missingDates,:), badRecordTable);
         if showBadRecords
-            warning(['File: ' xlsxFileName ' Sheet: ' sheetList{iSheet} ' excluded ' num2str(sum(missingDates)) ' records due to bad date formatting.']);
+            disp(['File: ' xlsxFileName ' Sheet: ' sheetList{iSheet} ' excluded ' num2str(sum(missingDates)) ' records due to bad date formatting.']);
         end
         tablefromSheetOutClean(missingDates,:) = [];
         tableOut = vertcat(tableOut, tablefromSheetOutClean);

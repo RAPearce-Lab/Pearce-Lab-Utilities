@@ -5,6 +5,8 @@
 % 2b. find the canonical columns and rows of interest (they don't all start in the same location!)
 % 2c. merge what we found from each sheet
 % 3. step through each sheet and merge!
+addpath('\\anesfs1\home$\smgrady\settings\Documents\Code\Pearce-Lab-Utilities');
+
 
 keyColumnHeaders = {'ID Number','DOB','Date of Exp','mouseAssignment','sacCode','fundingID'};
 bigSaveFile = 'Z:\PearceLabRecords\Mouse Inventory\2025totalMouseCount.xlsx';
@@ -34,6 +36,7 @@ for i = 1:size(tableOfTables,1)
         disp(['successfully read in in ' thisLine]);
     catch
         disp(['failed to read ' thisLine]);
+        keyboard;
     end
 end
 
