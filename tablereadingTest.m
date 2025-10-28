@@ -10,7 +10,7 @@ addpath('\\anesfs1\home$\smgrady\settings\Documents\Code\Pearce-Lab-Utilities');
 
 keyColumnHeaders = {'ID Number','DOB','Date of Exp','mouseAssignment','sacCode','fundingID'};
 bigSaveFile = 'Z:\PearceLabRecords\Mouse Inventory\2025totalMouseCount.xlsx';
-
+primaryHeader = 'DOB'; % in case the formatting is incomplete, we need one header that will determine if a record is valid or not.
 
 % example single animal file save
 % xlsxFileName = 'Z:\PearceLabRecords\Mouse Inventory\Lamp5-cre\Lamp5-cre.xlsx'; 
@@ -29,7 +29,7 @@ for i = 1:size(tableOfTables,1)
     try
         disp(['Reading in ' thisLine]);
         % our new function
-        [singleAnimaltable,badRecordTable] = readAndCombineXlsxRecord(xlsxFileName,keyColumnHeaders);
+        [singleAnimaltable,badRecordTable] = readAndCombineXlsxRecord(xlsxFileName,keyColumnHeaders,primaryHeader);
         % writetable(singleAnimaltable,singleAnimalSaveFileName);
         bigTable = vertcat(bigTable,singleAnimaltable);
         allBadRecords = vertcat(allBadRecords,badRecordTable);
